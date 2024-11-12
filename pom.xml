@@ -12,6 +12,7 @@
     <artifactId>demotroad</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>demotroad</name>
+    <packaging>war</packaging>
     <description>Demo project for T-Road API</description>
     <url/>
     <licenses>
@@ -33,8 +34,19 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-webmvc</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
+        <dependency>
+            <artifactId>spring-webmvc</artifactId>
+            <groupId>org.springframework</groupId>
+            <version>6.1.14</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
