@@ -8,7 +8,7 @@ Spring Boot
 > 請確保您的環境中安裝有 Java 22 及 Maven 3 以上版本
 執行步驟
 ```bat
-> git clone https://gitlab.iisigroup.com/ps150/g-p231301/modapc/t-road-file-transfer-message-and-api-message-notify-test-module.git
+> git clone https://github.com/TsubasaRush/t-road-file-transfer-message-and-api-message-notify-test-module.git
 > cd t-road-file-transfer-message-and-api-message-notify-test-module
 > mvn clean install
 > java -jar target/t-road-file-transfer-message-and-api-message-notify-test-module-0.0.1-SNAPSHOT.jar
