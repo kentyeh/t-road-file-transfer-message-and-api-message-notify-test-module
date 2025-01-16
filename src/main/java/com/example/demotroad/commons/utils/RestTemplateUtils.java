@@ -2,8 +2,10 @@ package com.example.demotroad.commons.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.client5.http.ssl.TrustAllStrategy;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -33,13 +35,16 @@ public class RestTemplateUtils {
                     .build();
 
             SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+            DefaultHostnameVerifier defaultHostnameVerifier = new DefaultHostnameVerifier();
+            TrustSelfSignedStrategy trustSelfSignedStrategy = new TrustSelfSignedStrategy();
+            //本機測試時請自行調整為不進行憑證驗證
 
             CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
                     .setSSLSocketFactory(SSLConnectionSocketFactoryBuilder.create()
                             .setSslContext(SSLContextBuilder.create()
-                                    .loadTrustMaterial(TrustAllStrategy.INSTANCE)
+                                    .loadTrustMaterial(trustSelfSignedStrategy)
                                     .build())
-                            .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                            .setHostnameVerifier(defaultHostnameVerifier)
                             .build())
                     .build())
                     .build();
@@ -64,35 +69,5 @@ public class RestTemplateUtils {
         }
     }
 
-    public static RestTemplate getRestTemplateNoHandShake() {
-        try {
-            // 20210811 呼叫外部系統改為略過SSL驗證
-            CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
-                    .setSSLSocketFactory(SSLConnectionSocketFactoryBuilder.create()
-                            .setSslContext(SSLContextBuilder.create()
-                                    .loadTrustMaterial(TrustAllStrategy.INSTANCE)
-                                    .build())
-                            .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                            .build())
-                    .build())
-                    .build();
 
-            HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-            requestFactory.setConnectTimeout(1000); //連接外部系統API 預設timeout = 1s
-            requestFactory.setHttpClient(httpClient);
-
-            RestTemplate restTemplate = new RestTemplate(requestFactory);
-            // 設定此物件將restTemplate回傳錯誤catch住
-//            restTemplate.setErrorHandler(new RestTemplateException());
-
-            return restTemplate;
-
-        } catch (KeyStoreException | NoSuchAlgorithmException e){
-            log.error("Get SSL exception : {}" , e.getMessage());
-            return new RestTemplate();
-        } catch (KeyManagementException e) {
-            log.error("KeyManagementException : {}" , e.getMessage());
-            return new RestTemplate();
-        }
-    }
 }
