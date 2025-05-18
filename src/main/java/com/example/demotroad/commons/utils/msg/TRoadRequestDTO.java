@@ -1,9 +1,11 @@
 package com.example.demotroad.commons.utils.msg;
 
-import java.util.Map;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "TRoadRequestDTO")
 public class TRoadRequestDTO {
 
+    @Schema(description = "由數發部提供的agreementId")
     private String agreementId;
 
     private String requestBody;
@@ -66,24 +68,22 @@ public class TRoadRequestDTO {
 
     @Override
     public String toString() {
-        return "TRoadRequestDTO{" +
-                "agreementId='" + agreementId + '\'' +
-                ", requestBody='" + requestBody + '\'' +
-                ", requestBy='" + requestBy + '\'' +
-                ", requestHeadersObject=" + requestHeadersObject +
-                ", requestMethod='" + requestMethod + '\'' +
-                ", ticketNo='" + ticketNo + '\'' +
-                '}';
+        return "TRoadRequestDTO{"
+                + "agreementId='" + agreementId + '\''
+                + ", requestBody='" + requestBody + '\''
+                + ", requestBy='" + requestBy + '\''
+                + ", requestHeadersObject=" + requestHeadersObject
+                + ", requestMethod='" + requestMethod + '\''
+                + ", ticketNo='" + ticketNo + '\''
+                + '}';
     }
 
-
     public class RequestHeaders {
+
         private String additionalProp1;
         private String additionalProp2;
 
-
         // Getter Methods
-
         public String getAdditionalProp1() {
             return additionalProp1;
         }
@@ -93,7 +93,6 @@ public class TRoadRequestDTO {
         }
 
         // Setter Methods
-
         public void setAdditionalProp1(String additionalProp1) {
             this.additionalProp1 = additionalProp1;
         }

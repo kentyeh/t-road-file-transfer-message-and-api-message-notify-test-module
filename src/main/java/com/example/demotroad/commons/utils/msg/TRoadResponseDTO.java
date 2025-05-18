@@ -14,7 +14,6 @@ public class TRoadResponseDTO {
     private String ticketNo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
-
     public Integer getcode() {
         return this.code;
     }
@@ -75,7 +74,6 @@ public class TRoadResponseDTO {
         this.result = result;
     }
 
-
     public String getticketNo() {
         return this.ticketNo;
     }
@@ -90,7 +88,6 @@ public class TRoadResponseDTO {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
     @Override
     public int hashCode() {
         // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
@@ -100,22 +97,21 @@ public class TRoadResponseDTO {
     // prettier-ignore
     @Override
     public String toString() {
-        return "TRoadResponseDTO{" +
-            " code='" + getcode() + "'" +
-            ", message='" + getmessage() + "'" +
-            ", responseCode='" + getresponseCode() + "'" +
-            ", result='" + getresult() + "'" +
-            ", ticketNo='" + getticketNo() + "'" +
-            "}";
+        return "TRoadResponseDTO{"
+                + " code='" + getcode() + "'"
+                + ", message='" + getmessage() + "'"
+                + ", responseCode='" + getresponseCode() + "'"
+                + ", result='" + getresult() + "'"
+                + ", ticketNo='" + getticketNo() + "'"
+                + "}";
     }
 
     public class ResponseHeaders {
+
         private String additionalProp1;
         private String additionalProp2;
 
-
         // Getter Methods
-
         public String getAdditionalProp1() {
             return additionalProp1;
         }
@@ -125,7 +121,6 @@ public class TRoadResponseDTO {
         }
 
         // Setter Methods
-
         public void setAdditionalProp1(String additionalProp1) {
             this.additionalProp1 = additionalProp1;
         }

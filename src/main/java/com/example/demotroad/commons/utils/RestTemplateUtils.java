@@ -1,54 +1,35 @@
 package com.example.demotroad.commons.utils;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
-import org.apache.hc.client5.http.ssl.TrustAllStrategy;
-import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
-import org.apache.hc.core5.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.SSLContext;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
+import org.apache.hc.core5.ssl.SSLContexts;
 
-@Slf4j
+@Log4j2
 public class RestTemplateUtils {
 
     public static RestTemplate getRestTemplate() {
         try {
-
-            TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-
-            SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-                    .loadTrustMaterial(null, acceptingTrustStrategy)
-                    .build();
-
-            SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-            DefaultHostnameVerifier defaultHostnameVerifier = new DefaultHostnameVerifier();
-            TrustSelfSignedStrategy trustSelfSignedStrategy = new TrustSelfSignedStrategy();
             //本機測試時請自行調整為不進行憑證驗證
-
-            CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
-                    .setSSLSocketFactory(SSLConnectionSocketFactoryBuilder.create()
-                            .setSslContext(SSLContextBuilder.create()
-                                    .loadTrustMaterial(trustSelfSignedStrategy)
-                                    .build())
-                            .setHostnameVerifier(defaultHostnameVerifier)
+            CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(
+                    PoolingHttpClientConnectionManagerBuilder.create()
+                            .setTlsSocketStrategy(
+                                    new DefaultClientTlsStrategy(
+                                            SSLContexts.custom()
+                                                    .loadTrustMaterial(null, (chain, authType) -> true)
+                                                    .build(),
+                                            (host, session) -> true))
                             .build())
-                    .build())
                     .build();
-
 
             HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
 
@@ -60,14 +41,12 @@ public class RestTemplateUtils {
 
             return restTemplate;
 
-        } catch (KeyStoreException | NoSuchAlgorithmException e){
-            log.error("Get SSL exception : {}" , e.getMessage());
+        } catch (KeyStoreException | NoSuchAlgorithmException e) {
+            log.error("Get SSL exception : {}", e.getMessage());
             return new RestTemplate();
         } catch (KeyManagementException e) {
-            log.error("KeyManagementException : {}" , e.getMessage());
+            log.error("KeyManagementException : {}", e.getMessage());
             return new RestTemplate();
         }
     }
-
-
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="@project.artifactId@" verbose="false" monitorInterval="30">
+    <Properties>
+        <property name="DEV_HOME" value="@project.build.directory@" />
+        <property name="LOG_HOME" value="${sys:catalina.home:-${DEV_HOME}}/logs" />
+        <property name="LOG_LEVEL" value="DEBUG" />
+        <property name="LOG_LINENO" value="true" />
+    </Properties>
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level} %class{1.}.%M(%L) - %msg%n%ex{full}%n" charset="UTF-8"/>
+        </Console>
+        <RollingRandomAccessFile name="@project.artifactId@-Rolling" fileName="${LOG_HOME}/@project.artifactId@.log"
+                                 filePattern="${LOG_HOME}/@project.artifactId@-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout charset="UTF-8">
+                <pattern>%d %p [%t] %C{1.}.%M(%L) %m%n%ex{full}%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="30">
+                <Delete basePath="${LOG_HOME}/" maxDepth="2">
+                    <IfFileName glob="*/@project.artifactId@-*.log.gz">
+                        <IfLastModified age="P30D">
+                            <IfAny>
+                                <IfAccumulatedFileSize exceeds="50 MB" />
+                                <IfAccumulatedFileCount exceeds="10" />
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingRandomAccessFile>
+<!--        <SMTP name="Mail" subject="GmsWeb嚴重錯誤" to="kent@ginmao.com.tw" from="test@logging.apache.org"
+                  smtpHost="smtp.ginmao.com.tw" smtpPort="25" bufferSize="50" smtpUsername="kent" smtpPassword="yourpassword">
+        </SMTP>-->
+    </Appenders>
+    <Loggers>
+<!--        <Logger name="org.springframework.web" level="DEBUG" additivity="false" includeLocation="true">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="@project.artifactId@-Rolling" />
+        </Logger>
+        <Logger name="org.springframework.security" level="TRACE" additivity="false" includeLocation="true">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="@project.artifactId@-Rolling" />
+        </Logger>-->
+        <Logger name="org.springframework.web.servlet.handler.HandlerMappingIntrospector" level="ERROR" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="@project.artifactId@-Rolling" />
+        </Logger>
+        <Logger name="com.example.demotroad" level="${sys:log4j.level:-${LOG_LEVEL}}" additivity="false" includeLocation="${sys:log4j.lineno:-${LOG_LINENO}}">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="@project.artifactId@-Rolling" />
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="@project.artifactId@-Rolling" />
+        </Root>
+    </Loggers>
+</Configuration>
