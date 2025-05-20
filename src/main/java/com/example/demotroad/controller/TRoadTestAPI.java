@@ -3,6 +3,10 @@ package com.example.demotroad.controller;
 import com.example.demotroad.commons.utils.msg.TRoadRequestDTO;
 import com.example.demotroad.commons.utils.msg.TRoadResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Base64;
 import java.util.Map;
@@ -28,6 +32,11 @@ public class TRoadTestAPI {
      * @return
      */
     @Operation(summary = "Troad-接受請求", description = "提供API給介接單位發出請求。")
+    @ApiResponses({
+        @ApiResponse(description = "成功時回應",
+                content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TRoadResponseDTO.class)),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TRoadResponseDTO.class))})})
     @PostMapping(value = "/apiService")
     @ResponseBody
     public TRoadResponseDTO apiService(
@@ -87,6 +96,11 @@ public class TRoadTestAPI {
      * @return
      */
     @Operation(summary = "Troad-檔案傳輸接受請求", description = "提供API給介接單位發出檔案傳輸請求。")
+    @ApiResponses({
+        @ApiResponse(description = "成功時回應",
+                content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TRoadRequestDTO.class)),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TRoadRequestDTO.class))})})
     @PostMapping(value = "/createFileTransfer")
     public TRoadResponseDTO createFileTransfer(
             @RequestHeader Map<String, String> headers,
@@ -144,6 +158,11 @@ public class TRoadTestAPI {
      * @return
      */
     @Operation(summary = "Troad-檔案傳輸啟動請求", description = "提供API給介接單位發出檔案傳輸啟動請求。")
+    @ApiResponses({
+        @ApiResponse(description = "成功時回應",
+                content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TRoadResponseDTO.class)),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TRoadResponseDTO.class))})})
     @PostMapping(value = "  /startFileTransfer")
     public TRoadResponseDTO startFileTransfer(
             @RequestHeader Map<String, String> headers,

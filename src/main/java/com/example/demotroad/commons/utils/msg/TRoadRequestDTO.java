@@ -2,7 +2,6 @@ package com.example.demotroad.commons.utils.msg;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "TRoadRequestDTO")
 public class TRoadRequestDTO {
 
     @Schema(description = "由數發部提供的agreementId")
