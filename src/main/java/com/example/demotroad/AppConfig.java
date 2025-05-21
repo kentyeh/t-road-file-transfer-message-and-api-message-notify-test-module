@@ -56,7 +56,7 @@ public class AppConfig {
     }
 
     @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     @Lazy
     public RestTemplate restTemplate() throws GeneralSecurityException {
         return new RestTemplate(clientHttpRequestFactory());
