@@ -163,7 +163,7 @@ public class TRoadTestAPI {
                 content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TRoadResponseDTO.class)),
                     @Content(mediaType = "application/xml", schema = @Schema(implementation = TRoadResponseDTO.class))})})
-    @PostMapping(value = "  /startFileTransfer")
+    @PostMapping(value = "/startFileTransfer")
     public TRoadResponseDTO startFileTransfer(
             @RequestHeader Map<String, String> headers,
             @RequestBody TRoadRequestDTO body

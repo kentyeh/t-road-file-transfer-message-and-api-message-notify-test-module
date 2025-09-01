@@ -112,3 +112,7 @@ curl -X POST -H "Content-Type: application/json" \
 JDK: Java 22
 框架: Spring Boot v3.3.2
 擴建工具: Maven
+
+## 6.Swagger Open-API
+
+開啟 http://localhost:8080/swagger-ui.html 
